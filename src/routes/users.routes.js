@@ -1,9 +1,9 @@
 const router = require('express').Router();
-const { query } = require('../../libs/sequelize');
+const sequelize = require('../../libs/sequelize');
 
 router.get('/', async(req, res, next) => {
     try {
-        const users = await query('select * from users;');
+        const users = await sequelize.query('select * from users;');
         console.log(users);
         res.json(users);
     } catch (error) {
