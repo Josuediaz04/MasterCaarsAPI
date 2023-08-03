@@ -1,28 +1,25 @@
-const config = require ('../config/index')
+const config = require("../config");
 
-const PASSWORD = encodeURIComponent(config.db_password)
-const user = encodeURIComponent(config.db_user)
+const PASSWORD = encodeURIComponent(config.db_password);
+const USER = encodeURIComponent(config.db_user);
 
-const dbConfig = {
-    user: config.db_user,
-    password: config.db_password,
-    server: config.db_host,
-    port: config.db_port,
-    database: config.dbName,
-    options: {
-      encrypt: true, // Si estás usando una conexión segura, como Azure, establece esto en true
-      trustServerCertificate: true, // Esto es opcional y depende de tu configuración de SQL Server
+let URI = `mssql://${USER}:${PASSWORD}@${config.db_host}/${config.dbName}`
+
+console.log(URI);
+
+module.exports = {
+  development: {
+    url: URI,
+    dialect: "mssql"
+  },
+  production: {
+    url: URI,
+    dialect: "mssql",
+    dialectOptions: {
+      options: {
+        encrypt: false,
+        trustServehrCertificate: true,
+      },
     },
-  };
-  console.log(dbConfig)
-  
-  module.exports = {
-    development: {
-      config: dbConfig,
-      dialect: 'mssql',
-    },
-    production: {
-      config: dbConfig,
-      dialect: 'mssql',
-    },
-  };
+  },
+};
