@@ -1,9 +1,6 @@
 const config = require("../config");
 
-const PASSWORD = encodeURIComponent(config.db_password);
-const USER = encodeURIComponent(config.db_user);
-
-let URI = `mssql://${USER}:${PASSWORD}@${config.db_host}/${config.dbName}`
+let URI = config.DB_URI;
 
 console.log(URI);
 
