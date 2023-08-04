@@ -1,13 +1,8 @@
-# Created by https://www.toptal.com/developers/gitignore/api/node,linux,windows,composer
-# Edit at https://www.toptal.com/developers/gitignore?templates=node,linux,windows,composer
+# Created by https://www.toptal.com/developers/gitignore/api/node,linux,windows,dotenv
+# Edit at https://www.toptal.com/developers/gitignore?templates=node,linux,windows,dotenv
 
-### Composer ###
-composer.phar
-/vendor/
-
-# Commit your application's lock file https://getcomposer.org/doc/01-basic-usage.md#commit-your-composer-lock-file-to-version-control
-# You may choose to ignore a library lock file http://getcomposer.org/doc/02-libraries.md#lock-file
-# composer.lock
+### dotenv ###
+.env
 
 ### Linux ###
 *~
@@ -100,7 +95,6 @@ web_modules/
 .yarn-integrity
 
 # dotenv environment variable files
-.env
 .env.development.local
 .env.test.local
 .env.production.local
@@ -190,4 +184,4 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
-# End of https://www.toptal.com/developers/gitignore/api/node,linux,windows,composer
+# End of https://www.toptal.com/developers/gitignore/api/node,linux,windows,dotenv
