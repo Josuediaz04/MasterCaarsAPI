@@ -1,10 +1,17 @@
 const { models } = require('../../libs/sequelize');
 const boom = require('@hapi/boom');
+const bcrypt = require('bcrypt');
 
 class UserService{
 
     async create(data) {
-        const user = await models.User.create(data);
+        const hash = await bcrypt.hash(data.password);
+        const newUser = {
+            ...data,
+            password: hash
+        }
+        const user = await models.User.create(newUser);
+        delete user.dataValues.password;
         return user;
     }
 
@@ -13,6 +20,7 @@ class UserService{
         if(!users){
             throw boom.notFound('No records found');
         };
+        delete users.dataValues.password;
         return users;
     }
 
@@ -21,12 +29,15 @@ class UserService{
         if(!user) {
             throw boom.notFound(`Record with id ${id} not found`);
         }
+        delete user.dataValues.password;
         return user;
     }
 
     async update(id, data) {
         const user = await this.readByPk(id);
-        const userUpdated = await user.update(data);
+        await user.update(data);
+        const userUpdated = await this.readByPk(id);
+        delete userUpdated.dataValues.password;
         return userUpdated;
     }
 
