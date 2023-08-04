@@ -15,7 +15,7 @@ const createUser = Joi.object({
     idRole: idRole.required()
 });
 
-const update = Joi.object({
+const updateUser = Joi.object({
     name,
     lastname,
     password,
@@ -29,6 +29,6 @@ const getUser = Joi.object({
 
 module.exports = {
     createUser,
-    update,
+    updateUser,
     getUser
 }
