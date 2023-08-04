@@ -1,10 +1,12 @@
 const UserService = require('../services/user.service');
+const { createUser, updateUser, getUser } = require('../schemas/user.Schema');
+const validatorHandler = require('../../middlewares/')
 
 const router = require('express').Router();
 
 const service = new UserService;
 
-router.get('/', 
+router.get('/',
     async(req, res, next) => {
         try {
             const users = await service.readAll();
@@ -20,7 +22,8 @@ router.get('/',
     }
 );
 
-router.get('/:id', 
+router.get('/:id',
+    validatorHandler(getUser, 'params'),
     async(req, res, next) => {
         try {
             const { id } = req.params;
@@ -37,7 +40,8 @@ router.get('/:id',
     }
 );
 
-router.post('/', 
+router.post('/',
+    validatorHandler(createUser, 'body'),
     async(req, res, next)=> {
         try {
             const user = await service.create(req.body);
@@ -53,7 +57,9 @@ router.post('/',
     }
 );
 
-router.patch('/', 
+router.patch('/',
+    validatorHandler(getUser, 'params'),
+    validatorHandler(updateUser, 'body'),
     async(req, res, next)=> {
         try {
             const { id } = req.params;
@@ -70,7 +76,8 @@ router.patch('/',
     }
 );
 
-router.delete('/', 
+router.delete('/',
+    validatorHandler(getUser, 'params'),
     async(req, res, next)=> {
         try {
             const { id } = req.params;
