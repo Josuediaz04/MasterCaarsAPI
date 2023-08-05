@@ -1,43 +1,39 @@
-const { Model, DataTypes, Sequelize, BelongsTo } = require('sequelize');
+const { Model, DataTypes, Sequelize } = require('sequelize');
 
-const { ROLE_TABLE } = require('./roleModel');
+const { USER_TABLE } = require('./usersModel');
 
-const USER_TABLE = 'users';
+const EMPLOYEE_TABLE = 'employees';
 
-const UserModel = {
+const EmployeeModel = {
     id: {
         primaryKey: true,
         autoIncrement: true,
         allowNull: false,
         type: DataTypes.INTEGER
     },
-    name: {
+    post: {
         type: DataTypes.STRING,
         allowNull: false
     },
-    lastname: {
+    dui: {
         type: DataTypes.STRING,
         allowNull: false
     },
-    email: {
-        type: DataTypes.STRING,
-        unique: true,
-        allowNull: false
-    },
-    password: {
+    direction: {
         type: DataTypes.STRING,
         allowNull: false
     },
-    status: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: true,
+    phone: {
+        type: DataTypes.INTEGER,
+        allowNull: false
     },
-    idRole: {
-        field: 'id_role',
+    idUser: {
+        field: 'id_user',
         type: DataTypes.INTEGER,
         allowNull: false,
+        unique: true,
         references: {
-            model: ROLE_TABLE,
+            model: USER_TABLE,
             key: 'id'
         },
         onUpdate: 'CASCADE',
@@ -51,14 +47,10 @@ const UserModel = {
     }
 };
 
-class User extends Model {
+class Employee extends Model {
     static associate(models) {
-        this.belongsTo(models.Role, {
-            as: 'role',
-            foreignKey: 'idRole'
-        });
-        this.hasOne(models.Employee, {
-            as: 'employeee',
+        this.belongsTo(models.User, {
+            as: 'user',
             foreignKey: 'idUser'
         })
     }
@@ -66,15 +58,15 @@ class User extends Model {
     static config(sequelize) {
         return {
             sequelize,
-            tableName: USER_TABLE,
-            modelName: "User",
+            tableName: EMPLOYEE_TABLE,
+            modelName: "Employee",
             timestamps: false
         }
     }
 };
 
 module.exports = {
-    USER_TABLE,
-    UserModel,
-    User
+    EMPLOYEE_TABLE,
+    EmployeeModel,
+    Employee
 }
