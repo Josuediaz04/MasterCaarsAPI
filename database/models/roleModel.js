@@ -15,7 +15,7 @@ const RoleModel = {
     },
     status: {
         type: DataTypes.BOOLEAN,
-        default: true,
+        defaultValue: true,
     },
     createAt: {
         field: 'created_at',

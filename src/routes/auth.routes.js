@@ -1,24 +1,27 @@
-const UserService = require('../services/user.service');
+const AuthService = require('../services/auth.service');
 const { login } = require('../schemas/auth.Schema');
-const validatorHandler = require('../../middlewares/')
+const validatorHandler = require('../../middlewares/validatorHandler')
+const passport = require('passport');
 
 const router = require('express').Router();
 
-const service = new UserService;
+const service = new AuthService;
 
-router.post('/',
+router.post('/login',
     validatorHandler(login, 'body'),
+    passport.authenticate('local', { session: false }),
     async(req, res, next) => {
         try {
-            const user = await service.create(req.body);
-            res.status(201).json({
-                statusCode: 201,
-                message: 'user created',
-                data: user
+            const user = req.user;
+            const token = await service.singToken(user);
+            res.status(302).json({
+                statusCode: 302,
+                message: 'user fetched',
+                data: user,
+                token: token
             });
         } catch (error) {
             next(error);
-            console.log(error);
         }
     }
 );

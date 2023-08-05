@@ -6,13 +6,15 @@ const lastname = Joi.string().min(3);
 const password = Joi.string().min(5).max(15);
 const email = Joi.string().min(5);
 const idRole = Joi.number().integer();
+const status = Joi.boolean();
 
 const createUser = Joi.object({
     name: name.required(),
     lastname: lastname.required(),
     password: password.required(),
     email: email.required(),
-    idRole: idRole.required()
+    idRole: idRole.required(),
+    status
 });
 
 const updateUser = Joi.object({
@@ -20,7 +22,8 @@ const updateUser = Joi.object({
     lastname,
     password,
     email,
-    idRole
+    idRole,
+    status
 });
 
 const getUser = Joi.object({

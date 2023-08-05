@@ -6,6 +6,7 @@ function logErrors(err,req,res,next) {
 
 function errorHandler(err,req,res) {
     res.status(500).json({
+        statusCode: 500,
         message: err.message,
         err: err.stack,
     });
@@ -25,7 +26,8 @@ function ormHandler(err,req,res,next) {
 function boomErrorHandler(err,req,res,next) {
     if(err.isBoom){
         const {output} = err;
-        res.satus(output.statusCode).json(output.payload) 
+        console.log(output);
+        res.status(output.statusCode).json(output.payload) 
     }
     next(err)
 }

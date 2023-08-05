@@ -30,17 +30,18 @@ const UserModel = {
     },
     status: {
         type: DataTypes.BOOLEAN,
-        default: true,
+        defaultValue: true,
     },
     idRole: {
         field: 'id_role',
         type: DataTypes.INTEGER,
+        allowNull: false,
         references: {
             model: ROLE_TABLE,
             key: 'id'
         },
         onUpdate: 'CASCADE',
-        onDelete: 'SET NULL',
+        onDelete: 'NO ACTION',
     },
     createAt: {
         field: 'created_at',
@@ -53,7 +54,8 @@ const UserModel = {
 class User extends Model {
     static associate(models) {
         this.belongsTo(models.Role, {
-            as: 'Roles'
+            as: 'role',
+            foreignKey: 'idRole'
         })
     }
 

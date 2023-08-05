@@ -5,7 +5,7 @@ const bcrypt = require('bcrypt');
 class UserService{
 
     async create(data) {
-        const hash = await bcrypt.hash(data.password);
+        const hash = await bcrypt.hash(data.password, 10);
         const newUser = {
             ...data,
             password: hash
@@ -16,11 +16,11 @@ class UserService{
     }
 
     async readAll(){
+        console.log(models);
         const users = await models.User.findAll();
         if(!users){
             throw boom.notFound('No records found');
         };
-        delete users.dataValues.password;
         return users;
     }
 

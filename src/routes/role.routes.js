@@ -3,9 +3,10 @@ const services = new RoleServices
 const router = require('express').Router()
 const  validatorHandler = require('../../middlewares/validatorHandler')
 const {createRole,getRole,updateRole} = require ('../schemas/role.sechema')
-const { compareSync } = require('bcrypt')
+const passport = require('passport')
 
 router.get('/',
+    passport.authenticate('jwt', { session: false }),
     async (req,res,next)=>{
         try {
             const role = await services.ReadAll()
@@ -21,7 +22,9 @@ router.get('/',
     }
 );
 
-router.get('/:id',validatorHandler(getRole,'params'),
+router.get('/:id',
+    passport.authenticate('jwt', { session: false }),
+    validatorHandler(getRole,'params'),
     async(req,res,next)=>{
         try {
         const {id} = req.params;
@@ -38,7 +41,9 @@ router.get('/:id',validatorHandler(getRole,'params'),
     }
 )
 
-router.post('/',validatorHandler(createRole,'body'),
+router.post('/',
+    passport.authenticate('jwt', { session: false }),
+    validatorHandler(createRole,'body'),
     async(req,res,next)=>{
         try {
             const role = await  services.create(req.body)
@@ -54,13 +59,15 @@ router.post('/',validatorHandler(createRole,'body'),
     }
 )
 
-router.patch('/:id', validatorHandler(updateRole, 'body'),
+router.patch('/:id',
+    passport.authenticate('jwt', { session: false }),
+    validatorHandler(updateRole, 'body'),
     async(req,res,next)=>{
         try {
             const {id} = req.params
             const role = await services.update(id,req.body)
-            res.status(202).json({
-                statusCode: 202,
+            res.status(302).json({
+                statusCode: 302,
                 messege:"role updated",
                 data: role
             })
@@ -72,15 +79,17 @@ router.patch('/:id', validatorHandler(updateRole, 'body'),
 
 );
 
-router.delete('/:id', validatorHandler(getRole, 'params'),
+router.delete('/:id',
+    passport.authenticate('jwt', { session: false }),
+    validatorHandler(getRole, 'params'),
     async(req,res,next)=>{
         try {
             const {id} = req.params;
-            const role = await services.delete(id)
+            await services.delete(id)
             res.status(202).json({
                 statusCode: 202,
                 message :"role deleted ",
-                data: role
+                data: id
             })
         } catch (error) {
             next(error)

@@ -1,5 +1,7 @@
 const { models } = require('../../libs/sequelize');
 const boom = require('@hapi/boom');
+const jwt = require('jsonwebtoken');
+const config = require('../../config');
 
 class AuthService{
 
@@ -12,10 +14,13 @@ class AuthService{
         return user;
     }
 
-    async update(id, data) {
-        const user = await this.readByPk(id);
-        const userUpdated = await user.update(data);
-        return userUpdated;
+    async singToken(user) {
+        const payload = {
+            sub: user.id,
+            status: user.status
+        }
+        const token = await jwt.sign(payload, config.JwtSecret, { expiresIn: '72 hours' });
+        return token;
     }
 }
 

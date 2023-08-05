@@ -22,6 +22,7 @@ class RoleServices {
         if (!role) {
             throw boom.notFound(`Role with id ${id} not found` )
         }
+        return role;
     }
 
     async update(id,data){
