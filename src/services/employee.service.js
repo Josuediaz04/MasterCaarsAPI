@@ -10,7 +10,9 @@ class EmployeeServices {
     }
 
     async ReadAll () {
-        const employees = await models.Employee.findAll();
+        const employees = await models.Employee.findAll({
+            include: ['user']
+        });
         if (!employees) {
             throw boom.notFound('Employees Not found');
         };
@@ -18,7 +20,9 @@ class EmployeeServices {
     }
 
     async readByPk(id){
-        const employee = await models.Employee.findByPk(id);
+        const employee = await models.Employee.findByPk(id, {
+            include: ['user']
+        });
         if (!employee) {
             throw boom.notFound(`Employee with id ${id} not found` );
         }

@@ -10,6 +10,7 @@ class AuthService{
             where: {
                 email
             },
+            include: ['role']
         });
         return user;
     }

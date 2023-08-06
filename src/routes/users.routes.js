@@ -41,7 +41,7 @@ router.get('/:id',
     }
 );
 
-router.post('/',
+router.post('/register',
     validatorHandler(createUser, 'body'),
     async(req, res, next)=> {
         try {
