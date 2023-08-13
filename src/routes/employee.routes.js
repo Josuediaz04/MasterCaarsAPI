@@ -43,6 +43,7 @@ router.get('/:id',
 
 router.post('/',
     validatorHandler(createEmployee, 'body'),
+    passport.authenticate('jwt', { session: false }),
     async(req, res, next)=> {
         try {
             const employee = await service.create(req.body);
