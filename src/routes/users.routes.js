@@ -1,11 +1,17 @@
 const UserService = require('../services/user.service');
-const { createUser, updateUser, getUser } = require('../schemas/user.Schema');
+const { createUser, updateUser, getUser, preCreateUser } = require('../schemas/user.Schema');
 const  validatorHandler = require('../../middlewares/validatorHandler');
 const passport = require('passport');
+const AuthService = require('../services/auth.service');
+const fs = require('fs');
+const path = require('path');
+const boom = require('@hapi/boom');
 
 const router = require('express').Router();
 
 const service = new UserService;
+const auth = new AuthService;
+const bodyHtml = fs.readFileSync(path.join(__dirname, '../mail/singup.html'), 'UTF-8');
 
 router.get('/',
     passport.authenticate('jwt', { session: false }),
@@ -41,11 +47,37 @@ router.get('/:id',
     }
 );
 
+router.patch('/register',
+    validatorHandler(createUser),
+    async(req, res, next) => {
+        passport.authenticate('jwtLogin', {session: false}, async(err, user) => {
+            try {
+                const data = req.body;
+                if (!user) {
+                    throw boom.unauthorized('validation failed');
+                }
+                const createUser = await service.createUser(data, user);
+                res.status(202).json({
+                    statusCode: 202,
+                    message:'created successfully',
+                    data: createUser
+                })
+            } catch (error) {
+                next(error);
+            }
+        })(req, res, next)
+    }
+);
+
 router.post('/register',
-    validatorHandler(createUser, 'body'),
+    validatorHandler(preCreateUser, 'body'),
     async(req, res, next)=> {
         try {
-            const user = await service.create(req.body);
+            const code = auth.generarCodigo();
+            const user = await service.create(req.body, code);
+            const token = await auth.signUp(user);
+            let html = bodyHtml.replace('{{token}}', token);
+            await auth.sendMail(user, 'Registro de cuenta Master Cars', html);
             res.status(201).json({
                 statusCode: 201,
                 message: 'user created',

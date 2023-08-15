@@ -10,7 +10,10 @@ const config = {
     db_user: process.env.DB_USER,
     db_password: process.env.DB_PASSWORD,
     DB_URI: process.env.DB_STRING,
-    JwtSecret: process.env.JWT_SECRET
+    JwtSecret: process.env.JWT_SECRET,
+    JwtLogin: process.env.JWT_LOGIN,
+    Mail: process.env.MAIL_ADDRESS,
+    Password: process.env.MAIL_PASSWORD,
 }
 
 module.exports = config
