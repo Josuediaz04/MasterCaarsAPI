@@ -8,13 +8,17 @@ const email = Joi.string().min(5);
 const idRole = Joi.number().integer();
 const status = Joi.boolean();
 
-const createUser = Joi.object({
-    name: name.required(),
-    lastname: lastname.required(),
-    password: password.required(),
+const preCreateUser = Joi.object({
     email: email.required(),
     idRole: idRole.required(),
     status
+});
+
+const createUser = Joi.object({
+    email: email.required(),
+    name: name.required(),
+    lastname: lastname.required(),
+    password: password.required(),
 });
 
 const updateUser = Joi.object({
@@ -33,5 +37,6 @@ const getUser = Joi.object({
 module.exports = {
     createUser,
     updateUser,
-    getUser
+    getUser,
+    preCreateUser
 }

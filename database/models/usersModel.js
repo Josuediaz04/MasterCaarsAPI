@@ -1,4 +1,4 @@
-const { Model, DataTypes, Sequelize, BelongsTo } = require('sequelize');
+const { Model, DataTypes, Sequelize } = require('sequelize');
 
 const { ROLE_TABLE } = require('./roleModel');
 
@@ -13,11 +13,11 @@ const UserModel = {
     },
     name: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: true
     },
     lastname: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: true
     },
     email: {
         type: DataTypes.STRING,
@@ -26,11 +26,15 @@ const UserModel = {
     },
     password: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: true
     },
     status: {
         type: DataTypes.BOOLEAN,
-        defaultValue: true,
+        defaultValue: false,
+    },
+    verificationCode: {
+        type: DataTypes.STRING,
+        allowNull: false
     },
     idRole: {
         field: 'id_role',
