@@ -20,9 +20,9 @@ class UserService{
     async createUser(data, payload){
         const user = await service.readByEmail(payload.email);
         if (payload.status !== user.dataValues.status) {
-            throw boom.badRequest("registration can only be completed once");
+            throw boom.badRequest("El registro solo puede ser completado una vez.");
         } if (payload.email !== data.email) {
-            throw boom.unauthorized("the email given must be the same as the registered one");
+            throw boom.unauthorized("el correo electrónico proporcionado debe ser el mismo que el registrado");
         }
         const hash = await bcrypt.hash(data.password, 10);
         const dto = {

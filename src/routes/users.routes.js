@@ -54,13 +54,19 @@ router.patch('/register',
             try {
                 const data = req.body;
                 if (!user) {
-                    throw boom.unauthorized('validation failed');
+                    throw boom.unauthorized('Fallo la validacion.');
                 }
                 const createUser = await service.createUser(data, user);
+                const getUser = {
+                    sub: createUser.dataValues.id,
+                    code: createUser.dataValues.verificationCode
+                }
+                const token = await auth.singToken(getUser);
                 res.status(202).json({
                     statusCode: 202,
                     message:'created successfully',
-                    data: createUser
+                    data: createUser,
+                    token: token
                 })
             } catch (error) {
                 next(error);
