@@ -1,7 +1,6 @@
 'use strict';
 
-const { EMPLOYEE_TABLE, EmployeeModel} = require('../models/employeesModel');
-
+const { EMPLOYEE_TABLE, EmployeeModel } = require('../models/employeesModel')
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface) {

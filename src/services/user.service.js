@@ -38,7 +38,7 @@ class UserService{
     async readAll(){
         console.log(models);
         const users = await models.User.findAll({
-            include: ['role']
+            include: ['role', 'receivedServices', 'employee']
         });
         if(!users){
             throw boom.notFound('No records found');
@@ -48,7 +48,7 @@ class UserService{
 
     async readByPk(id){
         const user = await models.User.findByPk(id, {
-            include: ['role']
+            include: ['role', 'receivedServices', 'employee']
         });
         if(!user) {
             throw boom.notFound(`Record with id ${id} not found`);

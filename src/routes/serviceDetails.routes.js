@@ -1,100 +1,96 @@
-const RoleServices = require('../services/role.service')
-const services = new RoleServices
-const router = require('express').Router()
-const  validatorHandler = require('../../middlewares/validatorHandler')
-const {createRole,getRole,updateRole} = require ('../schemas/role.sechema')
+const Services = require('../services/servicesDetails.service');
+const router = require('express').Router();
+const  validatorHandler = require('../../middlewares/validatorHandler');
+const { createServiceDetails, getServiceDetails, updateServiceDetails } = require ('../schemas/servicesDetails.chema');
 const passport = require('passport')
+
+const services = new Services;
 
 router.get('/',
     passport.authenticate('jwt', { session: false }),
     async (req,res,next)=>{
         try {
-            const role = await services.ReadAll()
+            const service = await services.ReadAll();
             res.status(200).json({
                 statusCode: 200,
-                message: 'role fetched',
-                data: role
+                message: 'service fetched',
+                data: service
             })
         } catch (error) {
             next(error)
-            console.log(error)
         }
     }
 );
 
 router.get('/:id',
     passport.authenticate('jwt', { session: false }),
-    validatorHandler(getRole,'params'),
+    validatorHandler(getServiceDetails,'params'),
     async(req,res,next)=>{
         try {
         const {id} = req.params;
-        const role  = await services.readByPk(id);
+        const service  = await services.readByPk(id);
         res.status(302).json({
             statusCode: 302,
-            message: 'role Found',
-            data: role
+            message: 'service Found',
+            data: service
         })
         } catch (error) {
             next(error)
-            console.log(error)  
         }
     }
 )
 
 router.post('/',
     passport.authenticate('jwt', { session: false }),
-    validatorHandler(createRole,'body'),
+    validatorHandler( createServiceDetails, 'body' ),
     async(req,res,next)=>{
         try {
-            const role = await  services.create(req.body)
+            console.log(req.body);
+            const service = await  services.create(req.body);
             res.status(201).json({
                 statuscode : 201,
-                messsage:'role created successfully ',
-                data:role
+                messsage: 'service created successfully ',
+                data: service
             })
         } catch (error) {
-            next(error)
-            console.log(error)
+            next(error);
         }
     }
 )
 
 router.patch('/:id',
     passport.authenticate('jwt', { session: false }),
-    validatorHandler(getRole,'params'),
-    validatorHandler(updateRole, 'body'),
+    validatorHandler( getServiceDetails, 'params' ),
+    validatorHandler( updateServiceDetails, 'body'),
     async(req,res,next)=>{
         try {
-            const {id} = req.params
-            const role = await services.update(id,req.body)
+            const {id} = req.params;
+            const role = await services.update( id, req.body );
             res.status(302).json({
                 statusCode: 302,
                 messege:"role updated",
                 data: role
             })
         } catch (error) {
-            next(error)
-            console.log(error)
+            next(error);
         }
     }
-
 );
 
 router.delete('/:id',
     passport.authenticate('jwt', { session: false }),
-    validatorHandler(getRole, 'params'),
+    validatorHandler( getServiceDetails, 'params' ),
     async(req,res,next)=>{
         try {
             const {id} = req.params;
-            await services.delete(id)
+            await services.delete(id);
             res.status(202).json({
                 statusCode: 202,
-                message :"role deleted ",
+                message :"service deleted ",
                 data: id
             })
         } catch (error) {
-            next(error)
-            console.log(error)  
+            next(error);
         }
     }
 )

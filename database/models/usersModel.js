@@ -46,6 +46,7 @@ const UserModel = {
         },
         onUpdate: 'CASCADE',
         onDelete: 'NO ACTION',
+        defaultValue: 2
     },
     createAt: {
         field: 'created_at',
@@ -62,9 +63,13 @@ class User extends Model {
             foreignKey: 'idRole'
         });
         this.hasOne(models.Employee, {
-            as: 'employeee',
+            as: 'employee',
             foreignKey: 'idUser'
-        })
+        });
+        this.hasMany(models.ServiceDetails, {
+            as: 'receivedServices',
+            foreignKey: 'idUser'
+        });
     }
 
     static config(sequelize) {

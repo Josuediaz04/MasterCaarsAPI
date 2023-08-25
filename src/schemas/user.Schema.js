@@ -10,8 +10,11 @@ const status = Joi.boolean();
 
 const preCreateUser = Joi.object({
     email: email.required(),
-    idRole: idRole.required(),
-    status
+    password,
+    idRole: idRole,
+    status,
+    name,
+    lastname
 });
 
 const createUser = Joi.object({

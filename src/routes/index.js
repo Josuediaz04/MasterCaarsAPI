@@ -1,9 +1,12 @@
 const router = require('express').Router();
 
 const userRouter = require('./users.routes');
-const roleRouter = require('./role.routes')
-const authRouter = require('./auth.routes')
-const employeeRouter = require('./employee.routes')
+const roleRouter = require('./role.routes');
+const authRouter = require('./auth.routes');
+const employeeRouter = require('./employee.routes');
+const servicesRouter = require('./services.routes');
+const servicesDetailsRouter = require('./serviceDetails.routes');
+const jobRouter = require('./job.routes');
 
 function setupRouter(app) {
     // http://localhost:3000/api/v1/users
@@ -12,7 +15,9 @@ function setupRouter(app) {
     router.use('/role', roleRouter);
     router.use('/auth', authRouter);
     router.use('/employee', employeeRouter);
-
+    router.use('/services', servicesRouter);
+    router.use('/service-detail', servicesDetailsRouter);
+    router.use('/job', jobRouter);
 }
 
 module.exports = setupRouter;

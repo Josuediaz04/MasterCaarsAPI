@@ -11,7 +11,7 @@ class AuthService{
             where: {
                 email
             },
-            include: ['role']
+            include: ['role', 'receivedServices', 'employee']
         });
         return user;
     }
