@@ -1,6 +1,7 @@
 const { Model, DataTypes, Sequelize } = require('sequelize');
 
 const { USER_TABLE } = require('./usersModel');
+const { JOB_TABLE } = require('./jobModel');
 
 const EMPLOYEE_TABLE = 'employees';
 
@@ -11,21 +12,28 @@ const EmployeeModel = {
         allowNull: false,
         type: DataTypes.INTEGER
     },
-    post: {
-        type: DataTypes.STRING,
-        allowNull: false
+    idJob: {
+        field: 'id_job',
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model : JOB_TABLE,
+            key: 'id'
+        },
+        onDelete: 'NO ACTION',
+        onUpdate: 'CASCADE'
     },
     dui: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: true
     },
     direction: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: true
     },
     phone: {
         type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: true
     },
     idUser: {
         field: 'id_user',
@@ -41,7 +49,7 @@ const EmployeeModel = {
     },
     createAt: {
         field: 'created_at',
-        type: DataTypes.DATEONLY,
+        type: DataTypes.DATE,
         defaultValue: Sequelize.NOW(),
         allowNull: false
     }
@@ -52,7 +60,11 @@ class Employee extends Model {
         this.belongsTo(models.User, {
             as: 'user',
             foreignKey: 'idUser'
-        })
+        });
+        this.belongsTo(models.Job, {
+            as: 'Job',
+            foreignKey: 'idJob'
+        });
     }
 
     static config(sequelize) {

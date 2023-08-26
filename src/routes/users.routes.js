@@ -12,6 +12,7 @@ const router = require('express').Router();
 const service = new UserService;
 const auth = new AuthService;
 const bodyHtml = fs.readFileSync(path.join(__dirname, '../mail/singup.html'), 'UTF-8');
+const customerHtml = fs.readFileSync(path.join(__dirname, '../mail/customer.html'), 'UTF-8');
 
 router.get('/',
     passport.authenticate('jwt', { session: false }),
@@ -54,13 +55,19 @@ router.patch('/register',
             try {
                 const data = req.body;
                 if (!user) {
-                    throw boom.unauthorized('validation failed');
+                    throw boom.unauthorized('Fallo la validacion.');
                 }
                 const createUser = await service.createUser(data, user);
+                const getUser = {
+                    sub: createUser.dataValues.id,
+                    code: createUser.dataValues.verificationCode
+                }
+                const token = await auth.singToken(getUser);
                 res.status(202).json({
                     statusCode: 202,
                     message:'created successfully',
-                    data: createUser
+                    data: createUser,
+                    token: token
                 })
             } catch (error) {
                 next(error);
@@ -73,15 +80,22 @@ router.post('/register',
     validatorHandler(preCreateUser, 'body'),
     async(req, res, next)=> {
         try {
+            const { role } = req.query;
             const code = auth.generarCodigo();
             const user = await service.create(req.body, code);
             const token = await auth.signUp(user);
-            let html = bodyHtml.replace('{{token}}', token);
+            const loginToken = await auth.singToken(user);
+            if (role == 'admin') {
+                var html = bodyHtml.replace('{{token}}', token);
+            } else {
+                var html = customerHtml.replace('{{code}}', code);
+            }
             await auth.sendMail(user, 'Registro de cuenta Master Cars', html);
             res.status(201).json({
                 statusCode: 201,
                 message: 'user created',
-                data: user
+                data: user,
+                token: loginToken
             });
         } catch (error) {
             next(error);

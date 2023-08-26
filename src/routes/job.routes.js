@@ -1,19 +1,19 @@
-const RoleServices = require('../services/role.service')
-const services = new RoleServices
-const router = require('express').Router()
-const  validatorHandler = require('../../middlewares/validatorHandler')
-const {createRole,getRole,updateRole} = require ('../schemas/role.sechema')
-const passport = require('passport')
+const JobServices = require('../services/job.service');
+const services = new JobServices;
+const router = require('express').Router();
+const  validatorHandler = require('../../middlewares/validatorHandler');
+const { createJob, getJob, updateJob } = require ('../schemas/job.schema');
+const passport = require('passport');
 
 router.get('/',
     passport.authenticate('jwt', { session: false }),
     async (req,res,next)=>{
         try {
-            const role = await services.ReadAll()
+            const jobs = await services.ReadAll()
             res.status(200).json({
                 statusCode: 200,
-                message: 'role fetched',
-                data: role
+                message: 'jobs fetched',
+                data: jobs
             })
         } catch (error) {
             next(error)
@@ -24,57 +24,54 @@ router.get('/',
 
 router.get('/:id',
     passport.authenticate('jwt', { session: false }),
-    validatorHandler(getRole,'params'),
+    validatorHandler( getJob, 'params'),
     async(req,res,next)=>{
         try {
         const {id} = req.params;
-        const role  = await services.readByPk(id);
+        const job  = await services.readByPk(id);
         res.status(302).json({
             statusCode: 302,
-            message: 'role Found',
-            data: role
+            message: 'job Found',
+            data: job
         })
         } catch (error) {
             next(error)
-            console.log(error)  
         }
     }
 )
 
 router.post('/',
     passport.authenticate('jwt', { session: false }),
-    validatorHandler(createRole,'body'),
+    validatorHandler( createJob, 'body'),
     async(req,res,next)=>{
         try {
-            const role = await  services.create(req.body)
+            const job = await  services.create(req.body)
             res.status(201).json({
                 statuscode : 201,
-                messsage:'role created successfully ',
-                data:role
+                messsage: 'job created successfully ',
+                data: job
             })
         } catch (error) {
             next(error)
-            console.log(error)
         }
     }
 )
 
 router.patch('/:id',
     passport.authenticate('jwt', { session: false }),
-    validatorHandler(getRole,'params'),
-    validatorHandler(updateRole, 'body'),
+    validatorHandler( getJob,'params'),
+    validatorHandler( updateJob, 'body'),
     async(req,res,next)=>{
         try {
             const {id} = req.params
-            const role = await services.update(id,req.body)
+            const job = await services.update(id,req.body)
             res.status(302).json({
                 statusCode: 302,
-                messege:"role updated",
-                data: role
+                messege:"job updated",
+                data: job
             })
         } catch (error) {
-            next(error)
-            console.log(error)
+            next(error);
         }
     }
 
@@ -82,19 +79,18 @@ router.patch('/:id',
 
 router.delete('/:id',
     passport.authenticate('jwt', { session: false }),
-    validatorHandler(getRole, 'params'),
+    validatorHandler( getJob, 'params'),
     async(req,res,next)=>{
         try {
             const {id} = req.params;
             await services.delete(id)
             res.status(202).json({
                 statusCode: 202,
-                message :"role deleted ",
+                message :"job deleted ",
                 data: id
             })
         } catch (error) {
-            next(error)
-            console.log(error)  
+            next(error);
         }
     }
 )

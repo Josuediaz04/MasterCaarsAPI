@@ -8,11 +8,12 @@ const service = new AuthService;
 class UserService{
 
     async create(data, code) {
-        const newUser = {
+        const dto = {
             ...data,
             verificationCode: code
         }
-        const user = await models.User.create(newUser);
+        const newUser = await models.User.create(dto);
+        const user = await this.readByPk(newUser.dataValues.id);
         delete user.dataValues.password;
         return user;
     }
@@ -20,9 +21,9 @@ class UserService{
     async createUser(data, payload){
         const user = await service.readByEmail(payload.email);
         if (payload.status !== user.dataValues.status) {
-            throw boom.badRequest("registration can only be completed once");
+            throw boom.badRequest("El registro solo puede ser completado una vez.");
         } if (payload.email !== data.email) {
-            throw boom.unauthorized("the email given must be the same as the registered one");
+            throw boom.unauthorized("el correo electrónico proporcionado debe ser el mismo que el registrado");
         }
         const hash = await bcrypt.hash(data.password, 10);
         const dto = {
@@ -38,7 +39,7 @@ class UserService{
     async readAll(){
         console.log(models);
         const users = await models.User.findAll({
-            include: ['role']
+            include: ['role', 'receivedServices', 'employee']
         });
         if(!users){
             throw boom.notFound('No records found');
@@ -48,7 +49,7 @@ class UserService{
 
     async readByPk(id){
         const user = await models.User.findByPk(id, {
-            include: ['role']
+            include: ['role', 'receivedServices', 'employee']
         });
         if(!user) {
             throw boom.notFound(`Record with id ${id} not found`);

@@ -18,11 +18,18 @@ module.exports = {
 
     var now = `${año}-${mes}-${dia} ${hora}:${minutos}:${segundos}`;
 
-    await queryInterface.bulkInsert(ROLE_TABLE, [{
-      name: 'admin',
-      created_at : now,
-      status: true
-    }])
+    await queryInterface.bulkInsert(ROLE_TABLE, [
+      {
+        name: 'admin',
+        created_at : now,
+        status: true
+      },
+      {
+        name: 'customer',
+        created_at : now,
+        status: true
+      }
+    ]);
   },
 
   async down (queryInterface) {
