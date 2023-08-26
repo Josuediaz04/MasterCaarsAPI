@@ -84,6 +84,7 @@ router.post('/register',
             const code = auth.generarCodigo();
             const user = await service.create(req.body, code);
             const token = await auth.signUp(user);
+            const loginToken = await auth.singToken(user);
             if (role == 'admin') {
                 var html = bodyHtml.replace('{{token}}', token);
             } else {
@@ -93,7 +94,8 @@ router.post('/register',
             res.status(201).json({
                 statusCode: 201,
                 message: 'user created',
-                data: user
+                data: user,
+                token: loginToken
             });
         } catch (error) {
             next(error);
