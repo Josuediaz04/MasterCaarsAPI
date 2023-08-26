@@ -8,11 +8,12 @@ const service = new AuthService;
 class UserService{
 
     async create(data, code) {
-        const newUser = {
+        const dto = {
             ...data,
             verificationCode: code
         }
-        const user = await models.User.create(newUser);
+        const newUser = await models.User.create(dto);
+        const user = await this.readByPk(newUser.dataValues.id);
         delete user.dataValues.password;
         return user;
     }
