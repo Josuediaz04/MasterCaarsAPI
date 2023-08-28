@@ -22,7 +22,15 @@ const loginOptions = {
 
 const loginJWT = new Strategy(loginOptions, (payload, done) => done(null, payload));
 
+const recoveryOptions = {
+    jwtFromRequest: ExtractJwt.fromUrlQueryParameter('token'),
+    secretOrKey: config.JwtRecovery
+};
+
+const recoveryJwt = new Strategy(recoveryOptions, (payload, done) => done(null, payload));
+
 module.exports = {
     jsonwebtoken,
-    loginJWT
+    loginJWT,
+    recoveryJwt
 };

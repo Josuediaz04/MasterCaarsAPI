@@ -1,9 +1,13 @@
 const AuthService = require('../services/auth.service');
-const { login } = require('../schemas/auth.Schema');
+const { login, recovery, recoveryPasword } = require('../schemas/auth.Schema');
 const validatorHandler = require('../../middlewares/validatorHandler')
 const passport = require('passport');
+const fs = require('fs');
+const path = require('path');
+const boom = require('@hapi/boom');
 
 const router = require('express').Router();
+const bodyHtml = fs.readFileSync(path.join(__dirname, '../mail/recovery.html'), 'utf-8')
 
 const service = new AuthService;
 
@@ -23,6 +27,42 @@ router.post('/login',
         } catch (error) {
             next(error);
         }
+    }
+);
+
+router.post('/recovery',
+    validatorHandler(recovery, 'body'),
+    async(req, res, next) => {
+        try {
+            const email = req.body.email;
+            const user = await service.readByEmail(email);
+            if (!user) {
+                throw boom.unauthorized('Error');
+            }
+            var token = await service.recovery(user.dataValues);
+            var html = bodyHtml.replace('{{token}}', token);
+            await service.sendMail(user.dataValues, 'Recuperacion de cuenta', html);
+            res.status(200).send('operation successfully');
+        } catch (error) {
+            next(error);
+        }
+    }
+)
+
+router.post('/recovery-password',
+    validatorHandler(recoveryPasword, 'body'),
+    async(req, res, next) => {
+        passport.authenticate('jwtRecovery', {session: false}, async(err, user) => {
+            try {
+                if (!user) {
+                    throw boom.unauthorized('No token provided');
+                }
+                const userupdated = await service.updatePassword(req.body, user);
+                res.status(202).json(userupdated);
+            } catch (error) {
+                next(error);
+            }
+        })(req, res, next);
     }
 );
 

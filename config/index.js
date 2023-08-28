@@ -12,6 +12,7 @@ const config = {
     DB_URI: process.env.DB_STRING,
     JwtSecret: process.env.JWT_SECRET,
     JwtLogin: process.env.JWT_LOGIN,
+    JwtRecovery: process.env.JWT_RECOVERY,
     Mail: process.env.MAIL_ADDRESS,
     Password: process.env.MAIL_PASSWORD,
 }
