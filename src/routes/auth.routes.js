@@ -54,6 +54,7 @@ router.post('/recovery-password',
     async(req, res, next) => {
         passport.authenticate('jwtRecovery', {session: false}, async(err, user) => {
             try {
+                console.log(user);
                 if (!user) {
                     throw boom.unauthorized('No token provided');
                 }

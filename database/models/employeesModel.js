@@ -62,7 +62,7 @@ class Employee extends Model {
             foreignKey: 'idUser'
         });
         this.belongsTo(models.Job, {
-            as: 'Job',
+            as: 'job',
             foreignKey: 'idJob'
         });
     }

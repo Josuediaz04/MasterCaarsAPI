@@ -3,6 +3,7 @@ const nodemailer = require('nodemailer');
 const boom = require('@hapi/boom');
 const jwt = require('jsonwebtoken');
 const config = require('../../config');
+const bcrypt = require('bcrypt');
 
 class AuthService{
 
@@ -18,7 +19,8 @@ class AuthService{
 
     async updatePassword(data, payload){
         const user = await this.readByEmail(payload.email);
-        const userupdated = await user.update(data);
+        const password = await bcrypt.hash(data.password, 10);
+        const userupdated = await user.update({password});
         return userupdated;
     }
 
@@ -37,7 +39,7 @@ class AuthService{
             email: user.email,
             status: user.status
         }
-        const token = await jwt.sign(payload, config.JwtLogin, { expiresIn: '2h' });
+        const token = await jwt.sign(payload, config.JwtRecovery, { expiresIn: '2h' });
         return token;
     }
 
