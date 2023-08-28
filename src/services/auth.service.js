@@ -16,12 +16,28 @@ class AuthService{
         return user;
     }
 
+    async updatePassword(data, payload){
+        const user = await this.readByEmail(payload.email);
+        const userupdated = await user.update(data);
+        return userupdated;
+    }
+
     async singToken(user) {
         const payload = {
             sub: user.id,
             code: user.status
         }
-        const token = await jwt.sign(payload, config.JwtSecret, { expiresIn: '72 hours' });
+        const token = await jwt.sign(payload, config.JwtSecret, { expiresIn: '72h' });
+        return token;
+    }
+
+    async recovery(user) {
+        const payload = {
+            sub: user.id,
+            email: user.email,
+            status: user.status
+        }
+        const token = await jwt.sign(payload, config.JwtLogin, { expiresIn: '2h' });
         return token;
     }
 
@@ -33,7 +49,7 @@ class AuthService{
             id: user.id,
             status: user.status
         }
-        const token = await jwt.sign(payload, config.JwtLogin, { expiresIn: '48 hours' });
+        const token = await jwt.sign(payload, config.JwtLogin, { expiresIn: '48h' });
         return token;
     }
 
