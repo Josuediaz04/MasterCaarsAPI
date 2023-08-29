@@ -19,8 +19,11 @@ class AuthService{
 
     async updatePassword(data, payload){
         const user = await this.readByEmail(payload.email);
+        if(user.dataValues.status != false) {
+            throw boom.unauthorized('solo puedes realizar una vez el registro');
+        }
         const password = await bcrypt.hash(data.password, 10);
-        const userupdated = await user.update({password});
+        const userupdated = await user.update({password, status: true});
         return userupdated;
     }
 
