@@ -5,11 +5,13 @@ const passport = require('passport');
 const fs = require('fs');
 const path = require('path');
 const boom = require('@hapi/boom');
+const UserService = require('../services/user.service');
 
 const router = require('express').Router();
 const bodyHtml = fs.readFileSync(path.join(__dirname, '../mail/recovery.html'), 'utf-8')
 
 const service = new AuthService;
+const userService = new UserService;
 
 router.post('/login',
     validatorHandler(login, 'body'),
@@ -36,6 +38,7 @@ router.post('/recovery',
         try {
             const email = req.body.email;
             const user = await service.readByEmail(email);
+            await userService.update(user.dataValues.id, {status: false});
             if (!user) {
                 throw boom.unauthorized('Error');
             }
@@ -55,7 +58,7 @@ router.post('/recovery-password',
         passport.authenticate('jwtRecovery', {session: false}, async(err, user) => {
             try {
                 if (!user) {
-                    throw boom.unauthorized('No token provided');
+                    throw boom.unauthorized('No autorizado, verifica tu correo');
                 }
                 const userupdated = await service.updatePassword(req.body, user);
                 res.status(202).json(userupdated);
