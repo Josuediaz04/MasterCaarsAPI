@@ -45,7 +45,7 @@ const EmployeeModel = {
             key: 'id'
         },
         onUpdate: 'CASCADE',
-        onDelete: 'NO ACTION',
+        onDelete: 'CASCADE',
     },
     createAt: {
         field: 'created_at',

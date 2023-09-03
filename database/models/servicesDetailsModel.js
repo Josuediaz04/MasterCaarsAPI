@@ -1,8 +1,20 @@
 const { Model, DataTypes, Sequelize } = require('sequelize');
 const { SERVICES_TABLE } = require('./ServiceModel');
 const { USER_TABLE } = require('./usersModel');
+const { EMPLOYEE_TABLE } = require('./employeesModel');
 
 const SERVICES_DETAILS_TABLE = 'services_details';
+
+var fechaActual = new Date();
+
+var año = fechaActual.getFullYear();
+var mes = fechaActual.getMonth() + 1;
+var dia = fechaActual.getDate();
+var hora = fechaActual.getHours();
+var minutos = fechaActual.getMinutes();
+var segundos = fechaActual.getSeconds();
+
+var now = `${año}-${mes}-${dia} ${hora}:${minutos}:${segundos}`;
 
 const ServiceDetailsModel = {
     id: {
@@ -11,24 +23,26 @@ const ServiceDetailsModel = {
         allowNull: false,
         type: DataTypes.INTEGER
     },
-    dateAdmission: {
+    quantity: {
+        allowNull: true,
+        type: DataTypes.INTEGER,
+
+    },
+    amountService: {
+        allowNull: true,
+        type: DataTypes.DOUBLE
+    },
+    amountSpare: {
+        allowNull: true,
+        type: DataTypes.DOUBLE
+    },
+    discount: {
+        allowNull: true,
+        type: DataTypes.DOUBLE
+    },
+    total: {
         allowNull: false,
-        field:'date_admission',
-        type: DataTypes.DATE,
-        defaultValue: Sequelize.NOW()
-    },
-    dateDelivery: {
-        allowNull: true,
-        type: DataTypes.DATE,
-        field: "date_delivery"
-    },
-    details: {
-        allowNull: true,
-        type: DataTypes.STRING,
-    },
-    amount: {
-        allowNull: true,
-        type: DataTypes.STRING
+        type :DataTypes.DOUBLE
     },
     idService: {
         allowNull: false,
@@ -52,10 +66,47 @@ const ServiceDetailsModel = {
         onDelete: "NO ACTION",
         onUpdate: "CASCADE"
     },
+    idEmployee: {
+        allowNull: false,
+        type: DataTypes.INTEGER,
+        field: "id_employee",
+        references:{
+            model: EMPLOYEE_TABLE,
+            key: "id"
+        },
+        onDelete: "NO ACTION",
+        onUpdate: "CASCADE"
+    },
+    idSpare: {
+        allowNull: false,
+        type: DataTypes.INTEGER,
+        field: "id_spare",
+        references:{
+            model: SPARE_TABLE,
+            key: "id"
+        },
+        onDelete: "NO ACTION",
+        onUpdate: "CASCADE"
+    },
     status: {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
-    }
+    },
+    dateDelivery: {
+        allowNull: true,
+        type: DataTypes.DATE,
+        field: "date_delivery"
+    },
+    details: {
+        allowNull: true,
+        type: DataTypes.STRING,
+    },
+    dateAdmission: {
+        allowNull: false,
+        field:'date_admission',
+        type: DataTypes.DATE,
+        defaultValue: now
+    },
 };
 
 class ServiceDetails extends Model {
