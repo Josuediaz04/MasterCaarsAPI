@@ -2,6 +2,7 @@ const { Model, DataTypes, Sequelize } = require('sequelize');
 const { SERVICES_TABLE } = require('./ServiceModel');
 const { USER_TABLE } = require('./usersModel');
 const { EMPLOYEE_TABLE } = require('./employeesModel');
+const { SPARE_TABLE } = require('./spareModel');
 
 const SERVICES_DETAILS_TABLE = 'services_details';
 
@@ -14,7 +15,7 @@ var hora = fechaActual.getHours();
 var minutos = fechaActual.getMinutes();
 var segundos = fechaActual.getSeconds();
 
-var now = `${año}-${mes}-${dia} ${hora}:${minutos}:${segundos}`;
+var now = `${dia}-${mes}-${año} ${hora}:${minutos}:${segundos}`;
 
 const ServiceDetailsModel = {
     id: {
@@ -58,8 +59,8 @@ const ServiceDetailsModel = {
     idUser: {
         allowNull: false,
         type: DataTypes.INTEGER,
-        field: "id_usuario",
-        references:{
+        field: "id_user",
+        references: {
             model: USER_TABLE,
             key:"id"
         },
@@ -81,7 +82,7 @@ const ServiceDetailsModel = {
         allowNull: false,
         type: DataTypes.INTEGER,
         field: "id_spare",
-        references:{
+        references: {
             model: SPARE_TABLE,
             key: "id"
         },
