@@ -11,13 +11,11 @@ class ServiceDetails {
     }
 
     async ReadAll (query) {
-        console.log(query);
         const options = {
             include: [],
             where: {}
         };
         const { limit, offset } = query;
-        console.log(typeof parseInt(query.limit));
         if (limit && offset) {
             options.limit = parseInt(limit);
             options.offset = parseInt(offset);
@@ -29,10 +27,9 @@ class ServiceDetails {
             }
         } else {
             options.where = {
-                status: true
+                status: false
             }
         }
-        console.log(options);
         const services = await models.ServiceDetails.findAll(options);
         if (!services) {
             throw boom.notFound('Services details Not found')
