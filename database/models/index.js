@@ -13,7 +13,7 @@ function setupModel(sequelize) {
     Service.init(ServiceModel, Service.config(sequelize));
     ServiceDetails.init(ServiceDetailsModel, ServiceDetails.config(sequelize));
     Job.init(JobModel, Job.config(sequelize));
-    Spare.init(spareModel,Job.config( sequelize));
+    Spare.init(spareModel, Spare.config(sequelize));
 
     User.associate(sequelize.models);
     Role.associate(sequelize.models);

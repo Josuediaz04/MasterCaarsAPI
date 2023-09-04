@@ -15,6 +15,9 @@ const idEmployee = Joi.number().integer();
 const idSpare = Joi.number().integer();
 const status = Joi.boolean();
 
+const limit = Joi.number().integer();
+const offset = Joi.number().integer();
+
 const createServiceDetails = Joi.object({
     amountService: amountService.required(),
     idService: idService.required(),
@@ -29,7 +32,16 @@ const createServiceDetails = Joi.object({
     idSpare,
     details,
     dateDelivery,
-})
+});
+
+const queryDetailschema = Joi.object({
+    offset,
+    status,
+    limit: Joi.when('offset', {
+      is: Joi.exist(),
+      then: limit.required(),
+    })
+  });
 
 
 const updateServiceDetails = Joi.object({
@@ -53,5 +65,6 @@ const getServiceDetails = Joi.object({
 module.exports ={
     createServiceDetails,
     updateServiceDetails,
-    getServiceDetails
+    getServiceDetails,
+    queryDetailschema
 }

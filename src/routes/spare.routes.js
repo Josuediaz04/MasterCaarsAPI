@@ -1,4 +1,4 @@
-const SpareServices = require ('../services/role.service')
+const SpareServices = require ('../services/spare.service')
 const services = new SpareServices
 const router = require('express').Router()
 const validatorHandler = require('../../middlewares/validatorHandler')

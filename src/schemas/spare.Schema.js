@@ -1,26 +1,29 @@
 const Joi = require('joi')
 
 const id = Joi.number().integer();
-const article_spare = Joi.string();
+const articleSpare = Joi.string();
 const description = Joi.string();
 const price = Joi.number().precision(2);
-const amount = Joi.number.integer();
-const brand_spare = Joi.string();
+const amount = Joi.number().integer();
+const brandSpare = Joi.string();
+const origin = Joi.string();
 
 const createSpare = Joi.object({
-    article_spare: article_spare.required(),
+    articleSpare: articleSpare.required(),
     description: description.required(),
     price: price.required(),
     amount: amount.required(),
-    brand_spare: brand_spare.required()
+    brandSpare: brandSpare.required(),
+    origin: origin.required(),
 });
 
 const updateSpare = Joi.object({
-    article_spare,
+    articleSpare,
     description,
     price,
     amount,
-    brand_spare
+    brandSpare,
+    origin
 })
 
 const getSpare = Joi.object({

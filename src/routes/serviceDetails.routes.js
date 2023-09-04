@@ -1,16 +1,17 @@
 const Services = require('../services/servicesDetails.service');
 const router = require('express').Router();
 const  validatorHandler = require('../../middlewares/validatorHandler');
-const { createServiceDetails, getServiceDetails, updateServiceDetails } = require ('../schemas/servicesDetails.chema');
+const { createServiceDetails, getServiceDetails, updateServiceDetails, queryDetailschema } = require ('../schemas/servicesDetails.chema');
 const passport = require('passport')
 
 const services = new Services;
 
 router.get('/',
     passport.authenticate('jwt', { session: false }),
+    validatorHandler(queryDetailschema, 'query'),
     async (req,res,next)=>{
         try {
-            const service = await services.ReadAll();
+            const service = await services.ReadAll(req.query);
             res.status(200).json({
                 statusCode: 200,
                 message: 'service fetched',

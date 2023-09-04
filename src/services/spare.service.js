@@ -1,10 +1,10 @@
-const { Role } = require('../../database/models/roleModel');
-const {models} = require ('../../libs/sequelize');
-const boom = require('@hapi/boom')
+const { models } = require ('../../libs/sequelize');
+const boom = require('@hapi/boom');
 
 class SpareServices {
 
     async create(data){
+        console.log(models);
         const spare = await models.Spare.create(data);
         return spare;
     }
