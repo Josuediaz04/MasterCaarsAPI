@@ -12,7 +12,7 @@ class EmployeeServices {
     async ReadAll () {
         const employees = await models.Employee.findAll({
             include: ['user', 'job']
-        });
+        }); 
         if (!employees) {
             throw boom.notFound('Employees Not found');
         };

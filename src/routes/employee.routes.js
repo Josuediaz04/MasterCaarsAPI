@@ -1,4 +1,4 @@
-const EmployeeService = require('../services/employee.service');
+ const EmployeeService = require('../services/employee.service');
 const { createEmployee, updateEmployee, getEmployee } = require('../schemas/employee.Schema');
 const  validatorHandler = require('../../middlewares/validatorHandler');
 const passport = require('passport');
