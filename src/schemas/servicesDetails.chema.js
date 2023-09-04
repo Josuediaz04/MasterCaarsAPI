@@ -1,29 +1,49 @@
 const Joi = require('joi')
 
 const id = Joi.number().integer();
+const quantity = Joi.number().integer();
 const details = Joi.string();
+const customer = Joi.string();
 const dateDelivery = Joi.date();
-const amount = Joi.number().integer();
+const amountService = Joi.number().precision(2);
+const amountSpare = Joi.number().precision(2);
+const discount = Joi.number().precision(2);
+const total = Joi.number().precision(2);
 const idService = Joi.number().integer();
 const idUser = Joi.number().integer();
+const idEmployee = Joi.number().integer();
+const idSpare = Joi.number().integer();
 const status = Joi.boolean();
 
 const createServiceDetails = Joi.object({
-    details: details,
-    dateDelivery: dateDelivery,
-    amount: amount.required(),
+    amountService: amountService.required(),
     idService: idService.required(),
+    idEmployee: idEmployee.required(),
     idUser: idUser.required(),
-    status
+    total: total.required(),
+    status,
+    quantity,
+    customer,
+    amountSpare,
+    discount,
+    idSpare,
+    details,
+    dateDelivery,
 })
 
 
 const updateServiceDetails = Joi.object({
     details,
     dateDelivery,
-    amount,
     idService,
-    status
+    status,
+    quantity,
+    customer,
+    amountSpare,
+    amountService,
+    discount,
+    total,
+    idSpare,
 })
 
 const getServiceDetails = Joi.object({

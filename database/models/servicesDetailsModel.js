@@ -6,17 +6,6 @@ const { SPARE_TABLE } = require('./spareModel');
 
 const SERVICES_DETAILS_TABLE = 'services_details';
 
-var fechaActual = new Date();
-
-var año = fechaActual.getFullYear();
-var mes = fechaActual.getMonth() + 1;
-var dia = fechaActual.getDate();
-var hora = fechaActual.getHours();
-var minutos = fechaActual.getMinutes();
-var segundos = fechaActual.getSeconds();
-
-var now = `${dia}-${mes}-${año} ${hora}:${minutos}:${segundos}`;
-
 const ServiceDetailsModel = {
     id: {
         primaryKey: true,
@@ -30,8 +19,8 @@ const ServiceDetailsModel = {
 
     },
     amountService: {
-        allowNull: true,
-        type: DataTypes.DOUBLE
+        allowNull: false,
+        type: DataTypes.DOUBLE,
     },
     amountSpare: {
         allowNull: true,
@@ -57,12 +46,12 @@ const ServiceDetailsModel = {
         onUpdate: "CASCADE"
     },
     idUser: {
-        allowNull: false,
+        allowNull: true,
         type: DataTypes.INTEGER,
         field: "id_user",
         references: {
             model: USER_TABLE,
-            key:"id"
+            key: "id"
         },
         onDelete: "NO ACTION",
         onUpdate: "CASCADE"
@@ -79,7 +68,7 @@ const ServiceDetailsModel = {
         onUpdate: "CASCADE"
     },
     idSpare: {
-        allowNull: false,
+        allowNull: true,
         type: DataTypes.INTEGER,
         field: "id_spare",
         references: {
@@ -102,11 +91,15 @@ const ServiceDetailsModel = {
         allowNull: true,
         type: DataTypes.STRING,
     },
+    customer: {
+        allowNull: true,
+        type: DataTypes.STRING,
+    },
     dateAdmission: {
         allowNull: false,
         field:'date_admission',
         type: DataTypes.DATE,
-        defaultValue: now
+        defaultValue: Sequelize.NOW
     },
 };
 
