@@ -113,6 +113,14 @@ class ServiceDetails extends Model {
             as: 'user',
             foreignKey: 'idUser'
         });
+        this.belongsTo(models.Employee,{
+           as: 'employee',
+           foreignKey : 'idEmployee'
+        })
+        this.belongsTo(models.Spare,{
+            as: 'spare',
+            foreignKey: 'idSpare'
+        })
     }
 
     static config(sequelize) {

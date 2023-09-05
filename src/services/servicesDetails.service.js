@@ -13,7 +13,7 @@ class ServiceDetails {
     async ReadAll (query) {
         console.log(query);
         const options = {
-            include: [],
+            include: ['user','employee','spare','service'],
             where: {}
         };
         const { limit, offset } = query;
