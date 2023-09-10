@@ -39,7 +39,8 @@ const spareModel = {
 
 class Spare extends Model {
     static associate(models) {
-
+        
+        
     }
 
     static config(sequelize) {

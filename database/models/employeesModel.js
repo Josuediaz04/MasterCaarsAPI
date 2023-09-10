@@ -3,6 +3,7 @@ const { Model, DataTypes, Sequelize } = require('sequelize');
 const { USER_TABLE } = require('./usersModel');
 const { JOB_TABLE } = require('./jobModel');
 
+
 const EMPLOYEE_TABLE = 'employees';
 
 const EmployeeModel = {
@@ -65,6 +66,7 @@ class Employee extends Model {
             as: 'job',
             foreignKey: 'idJob'
         });
+
     }
 
     static config(sequelize) {
