@@ -41,7 +41,7 @@ class ServiceDetails {
     }
 
     async readByPk(id){
-        const service = await models.ServiceDetails.findByPk(id)
+        const service = await models.ServiceDetails.findByPk(id,{ include: ['user','employee','spare','service']})
         if (!service) {
             throw boom.notFound(`Service detail with id ${id} not found` )
         }
