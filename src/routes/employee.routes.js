@@ -2,6 +2,13 @@
 const { createEmployee, updateEmployee, getEmployee } = require('../schemas/employee.Schema');
 const  validatorHandler = require('../../middlewares/validatorHandler');
 const passport = require('passport');
+const cloudinary = require('cloudinary');
+
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_NAME,
+    api_key: process.env.API_KEY,
+    api_secret:process.env.API_SECRET
+})
 
 const router = require('express').Router();
 
@@ -42,10 +49,12 @@ router.get('/:id',
 );
 
 router.post('/',
-    validatorHandler(createEmployee, 'body'),
-    passport.authenticate('jwt', { session: false }),
+    // validatorHandler(createEmployee, 'body'),
+    // passport.authenticate('jwt', { session: false }),
     async(req, res, next)=> {
         try {
+            const image = await cloudinary.v2.uploader.upload(req.file.path)
+            console.log(image);
             const employee = await service.create(req.body);
             res.status(201).json({
                 statusCode: 201,

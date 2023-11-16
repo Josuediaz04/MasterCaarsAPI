@@ -6,13 +6,15 @@ const dui = Joi.string();
 const direction = Joi.string();
 const phone = Joi.number();
 const idUser = Joi.number().integer();
+const imageUrl = Joi.binary()
 
 const createEmployee = Joi.object({
     post: post.required(),
     dui: dui.required(),
     direction: direction.required(),
     phone: phone.required(),
-    idUser: idUser.required()
+    idUser: idUser.required(),
+    imageUrl: imageUrl.required()
 })
 
 
@@ -21,7 +23,8 @@ const updateEmployee = Joi.object({
     dui,
     direction,
     phone,
-    idUser
+    idUser,
+    imageUrl
 })
 
 const getEmployee = Joi.object({

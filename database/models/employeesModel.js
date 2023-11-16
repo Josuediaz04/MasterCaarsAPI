@@ -13,6 +13,11 @@ const EmployeeModel = {
         allowNull: false,
         type: DataTypes.INTEGER
     },
+    imgUrl:{
+        allowNull: false,
+        type:DataTypes.STRING,
+        defaultValue:'https://static.thenounproject.com/png/583402-200.png'
+    },
     idJob: {
         field: 'id_job',
         type: DataTypes.INTEGER,
