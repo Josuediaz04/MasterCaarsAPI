@@ -80,7 +80,7 @@ const ServiceDetailsModel = {
     },
     status: {
         type: DataTypes.BOOLEAN,
-        defaultValue: false,
+        defaultValue: true,
     },
     dateDelivery: {
         allowNull: true,
