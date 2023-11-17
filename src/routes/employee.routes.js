@@ -3,16 +3,18 @@ const { createEmployee, updateEmployee, getEmployee } = require('../schemas/empl
 const  validatorHandler = require('../../middlewares/validatorHandler');
 const passport = require('passport');
 const cloudinary = require('cloudinary');
+const {cloudinaryConfig} = require('../../config/index')
+const fs = require('fs-extra');
+const router = require('express').Router();
+const service = new EmployeeService;
+
 
 cloudinary.config({
-    cloud_name: process.env.CLOUDINARY_NAME,
-    api_key: process.env.API_KEY,
-    api_secret:process.env.API_SECRET
+    cloud_name: cloudinaryConfig.name,
+    api_key: cloudinaryConfig.key,
+    api_secret: cloudinaryConfig.secret
+
 })
-
-const router = require('express').Router();
-
-const service = new EmployeeService;
 
 router.get('/',
     passport.authenticate('jwt', { session: false }),
@@ -53,14 +55,16 @@ router.post('/',
     // passport.authenticate('jwt', { session: false }),
     async(req, res, next)=> {
         try {
+            console.log(req.file);
             const image = await cloudinary.v2.uploader.upload(req.file.path)
-            console.log(image);
-            const employee = await service.create(req.body);
+            console.log(image.secure_url);
+            const employee = await service.create(req.body,image.secure_url);
             res.status(201).json({
                 statusCode: 201,
                 message: 'Employee created',
                 data: employee
             });
+            await fs.unlink(req.file.path)
         } catch (error) {
             next(error);
         }

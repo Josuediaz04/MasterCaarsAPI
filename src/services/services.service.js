@@ -4,9 +4,21 @@ const boom  = require ('@hapi/boom')
 
 class Services {
 
-    async create(data){
-        const service  = await models.Service.create(data)
-        return service;
+    async create(data, imageUrl){
+        const dto = {
+            ...data,
+            imgUrl: imageUrl
+        };
+
+        console.log(dto);
+        try {
+            const service = await models.Service.create(dto);
+            return service;
+        } catch (error) {
+            console.error('Error al crear el servicio:', error);
+            throw error; 
+        }
+        
     }
 
     async ReadAll () {

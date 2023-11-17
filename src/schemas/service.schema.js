@@ -3,7 +3,7 @@ const Joi = require('joi')
 const id = Joi.number().integer();
 const typeService = Joi.string();
 const description = Joi.string();
-const imgUrl = Joi.string();
+const imgUrl = Joi.binary();
 const price = Joi.number().integer();
 const status = Joi.boolean();
 

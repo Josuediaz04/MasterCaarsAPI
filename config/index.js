@@ -15,6 +15,11 @@ const config = {
     JwtRecovery: process.env.JWT_RECOVERY,
     Mail: process.env.MAIL_ADDRESS,
     Password: process.env.MAIL_PASSWORD,
+    cloudinaryConfig: {
+        name: process.env.CLOUDINDARY_NAME,
+        key: process.env.API_KEY,
+        secret: process.env.API_SECRET,
+    }
 }
 
 module.exports = config

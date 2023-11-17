@@ -4,9 +4,16 @@ const boom  = require ('@hapi/boom');
 
 class EmployeeServices {
 
-    async create(data){
-        const employee  = await models.Employee.create(data);
-        return employee;
+    async create(data,imageUrl){
+
+        const dto = {
+            ...data,
+            imgUrl:imageUrl
+        }
+
+        console.log(dto);
+        const employee  = await models.Employee.create(dto);
+        return employee;   
     }
 
     async ReadAll () {
